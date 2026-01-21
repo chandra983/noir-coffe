@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - Noir Coffee</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        /* --- 1. CORE VARIABLES --- */
+        :root {
+            --primary-noir: #1a1a1a;
+            --accent-gold: #c5a059;
+            --bg-light: #f8f9fa;
+            --text-dark: #212529;
+            --text-grey: #6c757d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            background-color: #FAFAFA;
+        }
+
+        h1, h2, h3, h4, h5, h6, .navbar-brand { font-weight: 700; letter-spacing: -0.5px; }
+
+        /* --- 2. NAVBAR --- */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 10px 0;
+        }
+        .navbar-brand img { max-height: 40px; width: auto; }
+        
+        .nav-link {
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 13px;
+            margin: 0 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+            transition: 0.3s;
+        }
+        .nav-link:hover { color: var(--accent-gold); }
+        
+        /* Active State */
+        .nav-link.active {
+            color: var(--primary-noir) !important;
+            border-bottom: 2px solid var(--accent-gold);
+        }
+        
+        .btn-order {
+            background-color: var(--primary-noir);
+            color: var(--accent-gold);
+            border: 1px solid var(--primary-noir);
+            border-radius: 5px;
+            padding: 8px 20px;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+        .btn-order:hover {
+            background-color: white;
+            color: var(--primary-noir);
+        }
+        .btn-order.mobile-icon { padding: 8px 12px; font-size: 16px; }
+
+        /* --- 3. PAGE HEADER --- */
+        .page-header {
+            background: linear-gradient(rgba(26, 26, 26, 0.75), rgba(26, 26, 26, 0.75)), 
+                        url('https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-top: 60px;
+        }
+        .page-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            border-bottom: 3px solid var(--accent-gold);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        /* --- 4. MENU LAYOUT --- */
+        .menu-section { padding: 60px 0; }
+
+        /* Sidebar Sort */
+        .menu-sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 100px;
+        }
+        .cat-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 12px 15px;
+            background: none;
+            border: none;
+            border-radius: 5px;
+            color: var(--text-grey);
+            font-weight: 600;
+            transition: 0.3s;
+            margin-bottom: 5px;
+        }
+        .cat-btn:hover { background: #f8f9fa; color: var(--primary-noir); }
+        .cat-btn.active {
+            background: var(--primary-noir);
+            color: var(--accent-gold);
+        }
+
+        /* Menu Card */
+        .menu-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            cursor: pointer;
+            height: 100%;
+            border: 1px solid #eee;
+        }
+        .menu-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .menu-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .menu-info { padding: 20px; text-align: center; }
+        .menu-name { font-weight: 700; font-size: 1.1rem; margin-bottom: 5px; color: var(--primary-noir); }
+        .menu-price { color: var(--accent-gold); font-weight: 600; }
+
+        /* --- 5. MODAL POPUP (FIXED) --- */
+        .modal-content { border: none; border-radius: 0; overflow: hidden; }
+        
+        .modal-img-box {
+            width: 100%;
+            height: 450px; /* FIX: Tinggi dikunci agar sama semua */
+            background: #eee;
+        }
+        .modal-img-full {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* FIX: Gambar menyesuaikan kotak tanpa gepeng */
+        }
+        
+        .modal-details {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+
+        /* --- 6. FOOTER & FLOATING --- */
+        footer { background-color: #111; color: #aaa; padding: 60px 0 30px; }
+        .footer-title { color: white; font-weight: 700; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px; }
+        footer a { color: #aaa; transition: 0.3s; text-decoration: none; }
+        footer a:hover { color: var(--accent-gold); }
+
+        .floating-container {
+            position: fixed; bottom: 30px; right: 30px; z-index: 9999;
+            display: flex; flex-direction: column; gap: 15px;
+        }
+        .btn-float {
+            width: 50px; height: 50px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); text-decoration: none; transition: 0.3s;
+        }
+        .btn-float:hover { transform: scale(1.1); }
+        .btn-wa { background-color: #25D366; color: white; font-size: 24px; }
+        .btn-top {
+            background-color: var(--primary-noir); color: var(--accent-gold);
+            font-size: 20px; opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        .btn-top.show { opacity: 1; visibility: visible; }
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .page-header { height: 250px; margin-top: 55px; }
+            .page-header h1 { font-size: 2.5rem; }
+            
+            /* Sidebar Mobile */
+            .menu-sidebar {
+                position: sticky;
+                top: 60px;
+                z-index: 99;
+                margin-bottom: 20px;
+                padding: 15px;
+                width: 100vw;
+                margin-left: -12px;
+                border-radius: 0;
+                overflow-x: auto;
+                white-space: nowrap;
+                display: flex;
+                gap: 10px;
+                scrollbar-width: none; 
+            }
+            .menu-sidebar::-webkit-scrollbar { display: none; }
+            
+            .cat-btn {
+                width: auto;
+                display: inline-block;
+                margin-bottom: 0;
+                padding: 8px 20px;
+                border: 1px solid #eee;
+                border-radius: 50px;
+                font-size: 13px;
+            }
+            .cat-btn.active { border-color: var(--primary-noir); }
+
+            /* Modal Mobile Fix */
+            .modal-img-box { 
+                height: 250px; /* FIX: Tinggi dikunci di mobile juga */
+            }
+            .modal-details { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://via.placeholder.com/150x50/1a1a1a/c5a059?text=NOIR+LOGO" alt="Noir Coffee Logo">
+            </a>
+            
+            <div class="d-flex align-items-center order-lg-last">
+                <a href="https://wa.me/6281234567890" target="_blank" class="btn-order me-2 d-none d-sm-inline-flex">
+                    <i class="bi bi-whatsapp me-2"></i>Pesan Sekarang
+                </a>
+                <a href="https://wa.me/6281234567890" target="_blank" class="btn-order mobile-icon me-2 d-inline-flex d-sm-none">
+                    <i class="bi bi-whatsapp"></i>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav pt-3 pt-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="menu.html">Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="store.html">Store</a></li>
+                    <li class="nav-item"><a class="nav-link" href="collab.html">Collaboration</a></li>
+                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="container text-center">
+            <h1>Our Menu</h1>
+        </div>
+    </div>
+
+    <section class="menu-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="menu-sidebar">
+                        <button class="cat-btn active" onclick="filterMenu('all')">All Menu</button>
+                        <button class="cat-btn" onclick="filterMenu('signature')">Signature Series</button>
+                        <button class="cat-btn" onclick="filterMenu('coffee')">Espresso Based</button>
+                        <button class="cat-btn" onclick="filterMenu('non-coffee')">Non-Coffee</button>
+                        <button class="cat-btn" onclick="filterMenu('pastry')">Pastry & Snacks</button>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <div class="row g-4" id="menuGrid">
+                        
+                        <div class="col-6 col-md-4 menu-item" data-cat="signature">
+                            <div class="menu-card" data-bs-toggle="modal" data-bs-target="#menuModal"
+                                 data-title="Noir Aren Latte" data-price="Rp 28.000" 
+                                 data-desc="Perpaduan espresso spesial Noir dengan gula aren murni dan susu segar."
+                                 data-img="https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=600&auto=format&fit=crop">
+                                <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=600&auto=format&fit=crop" class="menu-img" alt="Foto">
+                                <div class="menu-info">
+                                    <div class="menu-name">Noir Aren Latte</div>
+                                    <div class="menu-price">Rp 28.000</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 menu-item" data-cat="signature">
+                            <div class="menu-card" data-bs-toggle="modal" data-bs-target="#menuModal"
+                                 data-title="Gold Charcoal" data-price="Rp 35.000" 
+                                 data-desc="Minuman charcoal aktif premium dengan sentuhan rasa vanilla dan taburan edible gold."
+                                 data-img="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=600&auto=format&fit=crop">
+                                <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=600&auto=format&fit=crop" class="menu-img" alt="Foto">
+                                <div class="menu-info">
+                                    <div class="menu-name">Gold Charcoal</div>
+                                    <div class="menu-price">Rp 35.000</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 menu-item" data-cat="coffee">
+                            <div class="menu-card" data-bs-toggle="modal" data-bs-target="#menuModal"
+                                 data-title="Americano" data-price="Rp 22.000" 
+                                 data-desc="Espresso ganda diseduh dengan air panas. Tegas dan kuat."
+                                 data-img="https://images.unsplash.com/photo-1551033406-611cf9a28f67?q=80&w=600&auto=format&fit=crop">
+                                <img src="https://images.unsplash.com/photo-1551033406-611cf9a28f67?q=80&w=600&auto=format&fit=crop" class="menu-img" alt="Foto">
+                                <div class="menu-info">
+                                    <div class="menu-name">Americano</div>
+                                    <div class="menu-price">Rp 22.000</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 menu-item" data-cat="non-coffee">
+                            <div class="menu-card" data-bs-toggle="modal" data-bs-target="#menuModal"
+                                 data-title="Classic Matcha" data-price="Rp 30.000" 
+                                 data-desc="Matcha Jepang asli dipadukan dengan susu segar yang creamy."
+                                 data-img="https://images.unsplash.com/photo-1515825838458-f2a94b20105a?q=80&w=600&auto=format&fit=crop">
+                                <img src="https://images.unsplash.com/photo-1515825838458-f2a94b20105a?q=80&w=600&auto=format&fit=crop" class="menu-img" alt="Foto">
+                                <div class="menu-info">
+                                    <div class="menu-name">Matcha Latte</div>
+                                    <div class="menu-price">Rp 30.000</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 menu-item" data-cat="pastry">
+                            <div class="menu-card" data-bs-toggle="modal" data-bs-target="#menuModal"
+                                 data-title="Croissant" data-price="Rp 25.000" 
+                                 data-desc="Croissant khas Prancis yang renyah di luar dan lembut di dalam."
+                                 data-img="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=600&auto=format&fit=crop">
+                                <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=600&auto=format&fit=crop" class="menu-img" alt="Foto">
+                                <div class="menu-info">
+                                    <div class="menu-name">Croissant</div>
+                                    <div class="menu-price">Rp 25.000</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 menu-item" data-cat="coffee">
+                            <div class="menu-card" data-bs-toggle="modal" data-bs-target="#menuModal"
+                                 data-title="Cappuccino" data-price="Rp 28.000" 
+                                 data-desc="Keseimbangan sempurna antara espresso, susu panas, dan foam susu yang tebal."
+                                 data-img="https://images.unsplash.com/photo-1572442388796-11668a67e53d?q=80&w=600&auto=format&fit=crop">
+                                <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?q=80&w=600&auto=format&fit=crop" class="menu-img" alt="Foto">
+                                <div class="menu-info">
+                                    <div class="menu-name">Cappuccino</div>
+                                    <div class="menu-price">Rp 28.000</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="menuModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="row g-0">
+                    <div class="col-md-6">
+                        <div class="modal-img-box">
+                            <img src="" id="modalImg" class="modal-img-full" alt="Detail">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="modal-details position-relative">
+                            <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></button>
+                            <h2 id="modalTitle" class="fw-bold mb-2">Nama Menu</h2>
+                            <h4 id="modalPrice" class="text-warning fw-bold mb-4">Rp 0</h4>
+                            <p id="modalDesc" class="text-muted mb-5">Deskripsi...</p>
+                            <a href="#" id="modalLink" target="_blank" class="btn btn-dark w-100 rounded-pill py-3 fw-bold">
+                                <i class="bi bi-whatsapp me-2"></i> PESAN SEKARANG
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h6 class="footer-title">Headquarters</h6>
+                    <p>
+                        Noir Tower, Level 88<br>SCBD, Jakarta.
+                    </p>
+                    <p class="text-white fw-bold">021-999-NOIR</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6 class="footer-title">Consumer Relations</h6>
+                    <p>concierge@noircoffee.com</p>
+                </div>
+                <div class="col-md-4 mb-4 text-md-end">
+                    <h3 class="fw-bold text-white mb-3">NOIR.</h3>
+                    <p class="small">&copy; 2026 Noir Coffee.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="floating-container">
+        <a href="#" class="btn-float btn-top" id="scrollTopBtn"><i class="bi bi-arrow-up"></i></a>
+        <a href="https://wa.me/6281234567890" target="_blank" class="btn-float btn-wa"><i class="bi bi-whatsapp"></i></a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Scroll Top
+        const scrollBtn = document.getElementById('scrollTopBtn');
+        window.onscroll = function() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                scrollBtn.classList.add('show');
+            } else {
+                scrollBtn.classList.remove('show');
+            }
+        };
+        scrollBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+
+        // Filter Menu
+        function filterMenu(cat) {
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            document.querySelectorAll('.menu-item').forEach(item => {
+                if (cat === 'all' || item.getAttribute('data-cat') === cat) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Modal Logic
+        const menuModal = document.getElementById('menuModal');
+        menuModal.addEventListener('show.bs.modal', function (event) {
+            const btn = event.relatedTarget;
+            document.getElementById('modalTitle').textContent = btn.getAttribute('data-title');
+            document.getElementById('modalPrice').textContent = btn.getAttribute('data-price');
+            document.getElementById('modalDesc').textContent = btn.getAttribute('data-desc');
+            document.getElementById('modalImg').src = btn.getAttribute('data-img');
+            const msg = `Halo Noir Coffee, saya ingin pesan ${btn.getAttribute('data-title')}`;
+            document.getElementById('modalLink').href = `https://wa.me/6281234567890?text=${encodeURIComponent(msg)}`;
+        });
+    </script>
+</body>
+</html>
