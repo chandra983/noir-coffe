@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaboration - Noir Coffee</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        /* --- 1. CORE VARIABLES --- */
+        :root {
+            --primary-noir: #1a1a1a;
+            --accent-gold: #c5a059;
+            --bg-light: #f8f9fa;
+            --text-dark: #212529;
+            --text-grey: #6c757d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            background-color: #FAFAFA;
+        }
+
+        h1, h2, h3, h4, h5, h6, .navbar-brand { font-weight: 700; letter-spacing: -0.5px; }
+
+        /* --- 2. NAVBAR (SAMA PERSIS DENGAN INDEX.HTML) --- */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 10px 0;
+        }
+        .navbar-brand img {
+            max-height: 40px; /* Ukuran pas di mobile */
+            width: auto;
+        }
+        .nav-link {
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 13px;
+            margin: 0 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+            transition: 0.3s;
+        }
+        .nav-link:hover { color: var(--accent-gold); }
+        
+        /* Active State */
+        .nav-link.active {
+            color: var(--primary-noir) !important;
+            border-bottom: 2px solid var(--accent-gold);
+        }
+        
+        /* CTA Button */
+        .btn-order {
+            background-color: var(--primary-noir);
+            color: var(--accent-gold);
+            border: 1px solid var(--primary-noir);
+            border-radius: 5px;
+            padding: 8px 20px;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+        .btn-order:hover {
+            background-color: white;
+            color: var(--primary-noir);
+            border-color: var(--primary-noir);
+        }
+        /* Mobile Icon Only */
+        .btn-order.mobile-icon {
+            padding: 8px 12px;
+            font-size: 16px;
+        }
+
+        /* --- 3. PAGE HEADER --- */
+        .page-header {
+            background: linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.8)), 
+                        url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-top: 60px;
+        }
+        .page-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            border-bottom: 3px solid var(--accent-gold);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        /* --- 4. CONTENT SECTIONS --- */
+        section { padding: 80px 0; }
+
+        /* Criteria */
+        .criteria-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            height: 100%;
+            border: 1px solid #eee;
+        }
+        .criteria-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-gold);
+        }
+        .criteria-icon {
+            font-size: 3rem;
+            color: var(--accent-gold);
+            margin-bottom: 20px;
+        }
+        .criteria-title { font-weight: 700; margin-bottom: 15px; color: var(--primary-noir); }
+
+        /* Form */
+        .form-section {
+            background-color: var(--primary-noir);
+            color: white;
+        }
+        .form-control, .form-select {
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #ddd !important; /* Tambah Border Jelas */
+            margin-bottom: 20px;
+        }
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 0.25rem rgba(197, 160, 89, 0.5);
+        }
+        .btn-submit {
+            background-color: var(--accent-gold);
+            color: white;
+            padding: 12px 40px;
+            font-weight: 700;
+            border: none;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        .btn-submit:hover {
+            background-color: white;
+            color: var(--primary-noir);
+        }
+
+        /* Testimonials */
+        .partner-testi-card {
+            background: white;
+            padding: 30px;
+            border-left: 4px solid var(--accent-gold);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin: 15px 0;
+        }
+        .partner-logo {
+            height: 40px;
+            margin-bottom: 15px;
+            filter: grayscale(100%);
+            opacity: 0.7;
+            transition: 0.3s;
+        }
+        .partner-testi-card:hover .partner-logo { filter: grayscale(0%); opacity: 1; }
+
+        /* --- 5. FOOTER & FLOATING (SAMA DENGAN INDEX) --- */
+        footer {
+            background-color: #111;
+            color: #aaa;
+            padding: 60px 0 30px;
+        }
+        .footer-title {
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        footer a { color: #aaa; transition: 0.3s; text-decoration: none; }
+        footer a:hover { color: var(--accent-gold); }
+
+        .floating-container {
+            position: fixed; bottom: 30px; right: 30px; z-index: 9999;
+            display: flex; flex-direction: column; gap: 15px;
+        }
+        .btn-float {
+            width: 50px; height: 50px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); text-decoration: none; transition: 0.3s;
+        }
+        .btn-float:hover { transform: scale(1.1); }
+        .btn-wa { background-color: #25D366; color: white; font-size: 24px; }
+        .btn-top {
+            background-color: var(--primary-noir); color: var(--accent-gold);
+            font-size: 20px; opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        .btn-top.show { opacity: 1; visibility: visible; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-header { height: 250px; margin-top: 55px; }
+            .page-header h1 { font-size: 2.2rem; }
+            section { padding: 50px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://via.placeholder.com/150x50/1a1a1a/c5a059?text=NOIR+LOGO" alt="Noir Coffee Logo">
+            </a>
+            
+            <div class="d-flex align-items-center order-lg-last">
+                
+                <a href="https://wa.me/6281234567890" target="_blank" class="btn-order me-2 d-none d-sm-inline-flex">
+                    <i class="bi bi-whatsapp me-2"></i>Pesan Sekarang
+                </a>
+                
+                <a href="https://wa.me/6281234567890" target="_blank" class="btn-order mobile-icon me-2 d-inline-flex d-sm-none">
+                    <i class="bi bi-whatsapp"></i>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav pt-3 pt-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="menu.html">Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="store.html">Store</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="collab.html">Collaboration</a></li>
+                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="container text-center">
+            <h1>Partner With Us</h1>
+            <p class="lead">Let's create something extraordinary together.</p>
+        </div>
+    </div>
+
+    <section>
+        <div class="container">
+            <div class="text-center mb-5">
+                <h5 class="text-warning fw-bold text-uppercase">Why Partner with Noir?</h5>
+                <h2 class="fw-bold">Collaboration Criteria</h2>
+                <p class="text-muted">Kami mencari mitra yang memiliki visi yang sama untuk menghadirkan kualitas terbaik.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="criteria-card">
+                        <i class="bi bi-gem criteria-icon"></i>
+                        <h4 class="criteria-title">Premium Quality</h4>
+                        <p class="text-muted">Kami mengutamakan kualitas di atas segalanya. Partner kami harus memiliki standar keunggulan.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="criteria-card">
+                        <i class="bi bi-lightbulb criteria-icon"></i>
+                        <h4 class="criteria-title">Innovative Spirit</h4>
+                        <p class="text-muted">Kami menyukai ide-ide segar. Apakah itu menu kolaborasi, event unik, atau teknologi baru.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="criteria-card">
+                        <i class="bi bi-globe-americas criteria-icon"></i>
+                        <h4 class="criteria-title">Sustainability</h4>
+                        <p class="text-muted">Kami memprioritaskan mitra yang mendukung praktik bisnis ramah lingkungan dan berkelanjutan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="form-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-5 mb-5 mb-md-0">
+                    <h2 class="fw-bold mb-3">Let's Make It Happen</h2>
+                    <p class="text-white-50 mb-4">Isi formulir di samping untuk mengajukan proposal kolaborasi. Tim kami akan meninjau dan menghubungi Anda dalam waktu 3-5 hari kerja.</p>
+                    
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-envelope fs-4 text-warning me-3"></i>
+                        <div>
+                            <h6 class="mb-0 fw-bold">Email Us</h6>
+                            <small class="text-white-50">partnership@noircoffee.com</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-telephone fs-4 text-warning me-3"></i>
+                        <div>
+                            <h6 class="mb-0 fw-bold">Call Us</h6>
+                            <small class="text-white-50">+62 812 3456 7890 (Business Only)</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-7">
+                    <div class="bg-white p-4 p-md-5 rounded shadow-lg text-dark">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">Full Name</label>
+                                <input type="text" id="collabName" class="form-control" placeholder="Your Name">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">Company / Brand</label>
+                                <input type="text" id="collabBrand" class="form-control" placeholder="Brand Name">
+                            </div>
+                        </div>
+                        
+                        <label class="form-label fw-bold small">Email Address</label>
+                        <input type="email" id="collabEmail" class="form-control" placeholder="name@company.com">
+                        
+                        <label class="form-label fw-bold small">Collaboration Type</label>
+                        <select id="collabType" class="form-select">
+                            <option selected value="General">Select Type...</option>
+                            <option value="Product Collaboration">Product Collaboration</option>
+                            <option value="Event Partnership">Event Partnership</option>
+                            <option value="Corporate Order">Corporate Order</option>
+                            <option value="Venue Location">Venue / Location</option>
+                        </select>
+                        
+                        <label class="form-label fw-bold small">Proposal / Message</label>
+                        <textarea id="collabMessage" class="form-control" rows="4" placeholder="Tell us briefly about your idea..."></textarea>
+                        
+                        <button type="button" class="btn btn-submit w-100 mt-3" onclick="sendToWhatsapp()">Submit Proposal</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2 class="text-center fw-bold mb-5">Our Previous Partners</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="partner-testi-card">
+                        <img src="https://via.placeholder.com/150x40?text=Brand+A" class="partner-logo" alt="Partner Logo">
+                        <p class="fst-italic text-secondary">"Berkolaborasi dengan Noir Coffee untuk peluncuran koleksi fashion kami adalah keputusan terbaik. Kopi mereka meningkatkan experience pengunjung kami."</p>
+                        <h6 class="fw-bold mt-3 mb-0">Marketing Director</h6>
+                        <small class="text-muted">Fashion Brand X</small>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="partner-testi-card">
+                        <img src="https://via.placeholder.com/150x40?text=Brand+B" class="partner-logo" alt="Partner Logo">
+                        <p class="fst-italic text-secondary">"Noir Coffee sangat profesional dalam menangani corporate event kami. Kualitas produk konsisten dan tim mereka sangat responsif."</p>
+                        <h6 class="fw-bold mt-3 mb-0">Event Manager</h6>
+                        <small class="text-muted">Tech Startup Y</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h6 class="footer-title">Headquarters</h6>
+                    <p>
+                        Noir Tower, Level 88<br>
+                        Sudirman Central Business District, Jakarta.
+                    </p>
+                    <p class="text-white fw-bold">021-999-NOIR</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6 class="footer-title">Consumer Relations</h6>
+                    <p>
+                        Need assistance?<br>
+                        Email: concierge@noircoffee.com
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4 text-md-end">
+                    <h3 class="fw-bold text-white mb-3">NOIR.</h3>
+                    <p class="small">
+                        &copy; 2026 Noir Coffee. All rights reserved.<br>
+                        <a href="#">Terms</a> | <a href="#">Privacy</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="floating-container">
+        <a href="#" class="btn-float btn-top" id="scrollTopBtn" title="Back to Top">
+            <i class="bi bi-arrow-up"></i>
+        </a>
+        <a href="https://wa.me/6281234567890" target="_blank" class="btn-float btn-wa" title="Chat WhatsApp">
+            <i class="bi bi-whatsapp"></i>
+        </a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const scrollBtn = document.getElementById('scrollTopBtn');
+        window.onscroll = function() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                scrollBtn.classList.add('show');
+            } else {
+                scrollBtn.classList.remove('show');
+            }
+        };
+        scrollBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+
+        // WhatsApp Logic
+        function sendToWhatsapp() {
+            const name = document.getElementById('collabName').value;
+            const brand = document.getElementById('collabBrand').value;
+            const email = document.getElementById('collabEmail').value;
+            const type = document.getElementById('collabType').value;
+            const message = document.getElementById('collabMessage').value;
+
+            // Validasi Sederhana
+            if(name == "" || brand == "" || email == "") {
+                alert("Mohon lengkapi Nama, Brand, dan Email.");
+                return;
+            }
+
+            const text = `Halo Noir Coffee, saya ingin mengajukan proposal kolaborasi.%0a%0a` +
+                         `*Nama:* ${name}%0a` +
+                         `*Brand:* ${brand}%0a` +
+                         `*Email:* ${email}%0a` +
+                         `*Tipe Kolaborasi:* ${type}%0a` +
+                         `*Pesan:* ${message}`;
+
+            window.open(`https://wa.me/6281234567890?text=${text}`, '_blank');
+        }
+    </script>
+</body>
+</html>
