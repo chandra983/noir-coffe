@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Noir Coffee</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        /* --- 1. CORE VARIABLES & RESET --- */
+        :root {
+            --primary-noir: #1a1a1a;
+            --accent-gold: #c5a059;
+            --bg-light: #f8f9fa;
+            --text-dark: #212529;
+            --text-grey: #6c757d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden; /* Mencegah horizontal scroll */
+            position: relative;
+        }
+
+        h1, h2, h3, h4, h5, h6, .navbar-brand {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        section { padding: 60px 0; }
+
+        /* --- 2. NAVBAR (SAMA PERSIS DENGAN INDEX) --- */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 10px 0;
+        }
+        .navbar-brand img {
+            max-height: 40px;
+            width: auto;
+        }
+        .nav-link {
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 13px;
+            margin: 0 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .nav-link:hover {
+            color: var(--accent-gold);
+        }
+        
+        /* REVISI: Active State dengan Garis Bawah Emas */
+        .nav-link.active {
+            color: var(--primary-noir) !important;
+            border-bottom: 2px solid var(--accent-gold);
+        }
+        
+        .btn-order {
+            background-color: var(--primary-noir);
+            color: var(--accent-gold);
+            border: 1px solid var(--primary-noir);
+            border-radius: 5px;
+            padding: 8px 20px;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-order:hover {
+            background-color: white;
+            color: var(--primary-noir);
+            border-color: var(--primary-noir);
+        }
+        .btn-order.mobile-icon {
+            padding: 8px 12px;
+            font-size: 16px;
+        }
+
+        /* --- 3. PAGE HEADER (HERO) --- */
+        .page-header {
+            background: linear-gradient(rgba(26, 26, 26, 0.75), rgba(26, 26, 26, 0.75)), 
+                        url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-top: 60px; /* Kompensasi Fixed Navbar */
+        }
+        .page-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            border-bottom: 3px solid var(--accent-gold);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        /* --- 4. BLOG CONTENT --- */
+        section { padding: 60px 0; }
+
+        .blog-controls {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 0.25rem rgba(197, 160, 89, 0.25);
+            border-color: var(--accent-gold);
+        }
+
+        .blog-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-color: var(--accent-gold);
+        }
+        .blog-img {
+            height: 220px;
+            width: 100%;
+            object-fit: cover;
+        }
+        .blog-body {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .blog-meta {
+            font-size: 0.8rem;
+            color: var(--accent-gold);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .blog-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-noir);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .blog-excerpt {
+            font-size: 0.9rem;
+            color: var(--text-grey);
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        .read-more {
+            color: var(--primary-noir);
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+        .read-more:hover { color: var(--accent-gold); }
+
+        /* Pagination */
+        .pagination .page-link {
+            color: var(--primary-noir);
+            border: none;
+            padding: 10px 15px;
+            margin: 0 5px;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+        .pagination .page-link:hover {
+            background-color: #f0f0f0;
+            color: var(--accent-gold);
+        }
+        .pagination .page-item.active .page-link {
+            background-color: var(--primary-noir);
+            color: var(--accent-gold);
+        }
+        .pagination .page-item.disabled .page-link {
+            color: #ccc;
+            background-color: transparent;
+        }
+
+        /* --- 5. FOOTER & FLOATING (SAMA DENGAN INDEX) --- */
+        footer {
+            background-color: #111;
+            color: #aaa;
+            padding: 60px 0 30px;
+        }
+        .footer-title {
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        footer a { color: #aaa; transition: 0.3s; }
+        footer a:hover { color: var(--accent-gold); }
+
+        .floating-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .btn-float {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+        .btn-float:hover { transform: scale(1.1); }
+        .btn-wa { background-color: #25D366; color: white; font-size: 24px; }
+        .btn-top {
+            background-color: var(--primary-noir);
+            color: var(--accent-gold);
+            font-size: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        .btn-top.show { opacity: 1; visibility: visible; }
+
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 768px) {
+            .page-header {
+                height: 300px;
+                margin-top: 55px;
+            }
+            .page-header h1 { font-size: 2.5rem; }
+            
+            section { padding: 40px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://via.placeholder.com/150x50/1a1a1a/c5a059?text=NOIR+LOGO" alt="Noir Coffee Logo">
+            </a>
+            
+            <div class="d-flex align-items-center order-lg-last">
+                <a href="https://wa.me/6281234567890" target="_blank" class="btn-order me-2 d-none d-sm-inline-flex">
+                    <i class="bi bi-whatsapp me-2"></i>Pesan Sekarang
+                </a>
+                <a href="https://wa.me/6281234567890" target="_blank" class="btn-order mobile-icon me-2 d-inline-flex d-sm-none">
+                    <i class="bi bi-whatsapp"></i>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav pt-3 pt-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="menu.html">Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="store.html">Store</a></li>
+                    <li class="nav-item"><a class="nav-link" href="collab.html">collaboration</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="blog.html">Blog</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="container text-center">
+            <h1>Noir Journal</h1>
+            <p class="lead">Latest news, brewing tips, and stories from our community.</p>
+        </div>
+    </div>
+
+    <section>
+        <div class="container">
+            
+            <div class="blog-controls">
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search articles...">
+                    </div>
+                    <div class="col-md-4">
+                        <select id="categoryFilter" class="form-select">
+                            <option value="All">All Categories</option>
+                            <option value="News">News</option>
+                            <option value="Tips">Tips & Tricks</option>
+                            <option value="Event">Event</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4" id="blogContainer">
+                </div>
+
+            <div class="d-flex justify-content-center mt-5">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination" id="pagination">
+                        </ul>
+                </nav>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h6 class="footer-title">Headquarters</h6>
+                    <p>
+                        Noir Tower, Level 88<br>
+                        Sudirman Central Business District, Jakarta.
+                    </p>
+                    <p class="text-white fw-bold">021-999-NOIR</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6 class="footer-title">Consumer Relations</h6>
+                    <p>
+                        Need assistance?<br>
+                        Email: concierge@noircoffee.com
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4 text-md-end">
+                    <h3 class="fw-bold text-white mb-3">NOIR.</h3>
+                    <p class="small">
+                        &copy; 2026 Noir Coffee. All rights reserved.<br>
+                        <a href="#">Terms</a> | <a href="#">Privacy</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="floating-container">
+        <a href="#" class="btn-float btn-top" id="scrollTopBtn" title="Back to Top">
+            <i class="bi bi-arrow-up"></i>
+        </a>
+        <a href="https://wa.me/6281234567890" target="_blank" class="btn-float btn-wa" title="Chat WhatsApp">
+            <i class="bi bi-whatsapp"></i>
+        </a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Scroll Top
+        const scrollBtn = document.getElementById('scrollTopBtn');
+        window.onscroll = function() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                scrollBtn.classList.add('show');
+            } else {
+                scrollBtn.classList.remove('show');
+            }
+        };
+        scrollBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+
+        // --- BLOG DATA ---
+        const blogPosts = [
+            {
+                title: "Noir Expands to Tokyo",
+                category: "News",
+                date: "Jan 20, 2026",
+                img: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=600&auto=format&fit=crop",
+                excerpt: "Noir Coffee officially opens its first international flagship store in Shibuya, Tokyo."
+            },
+            {
+                title: "Brewing Guide: V60 Method",
+                category: "Tips",
+                date: "Jan 15, 2026",
+                img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=600&auto=format&fit=crop",
+                excerpt: "Learn how to brew the perfect cup of pour-over coffee using the V60 method at home."
+            },
+            {
+                title: "Partnership with Fashion Week",
+                category: "Event",
+                date: "Jan 10, 2026",
+                img: "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=600&auto=format&fit=crop",
+                excerpt: "Noir Coffee becomes the official coffee partner for Jakarta Fashion Week 2026."
+            },
+            {
+                title: "Gold Label Series Launch",
+                category: "News",
+                date: "Dec 25, 2025",
+                img: "https://images.unsplash.com/photo-1610632380989-680fe40816c6?q=80&w=600&auto=format&fit=crop",
+                excerpt: "Introducing our most exclusive beans yet: The Gold Label Series, sourced from Gayo."
+            },
+            {
+                title: "Latte Art for Beginners",
+                category: "Tips",
+                date: "Dec 10, 2025",
+                img: "https://images.unsplash.com/photo-1551033406-611cf9a28f67?q=80&w=600&auto=format&fit=crop",
+                excerpt: "Step-by-step guide to pouring your first heart shape. It's easier than you think!"
+            },
+            {
+                title: "Noir Jazz Night 2025",
+                category: "Event",
+                date: "Nov 30, 2025",
+                img: "https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=600&auto=format&fit=crop",
+                excerpt: "A magical night of smooth jazz and dark roast at our SCBD Flagship store."
+            },
+            {
+                title: "Understanding Coffee Roast",
+                category: "Tips",
+                date: "Nov 15, 2025",
+                img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=600&auto=format&fit=crop",
+                excerpt: "Light, Medium, or Dark? Find out which roast profile suits your palate best."
+            },
+            {
+                title: "Sustainable Farming Project",
+                category: "News",
+                date: "Oct 20, 2025",
+                img: "https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?q=80&w=600&auto=format&fit=crop",
+                excerpt: "Noir invests in sustainable farming practices to support local coffee farmers in Flores."
+            }
+        ];
+
+        // --- LOGIC ---
+        const itemsPerPage = 6;
+        let currentPage = 1;
+        let filteredPosts = blogPosts;
+
+        const container = document.getElementById('blogContainer');
+        const paginationContainer = document.getElementById('pagination');
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+
+        function displayPosts() {
+            container.innerHTML = '';
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedPosts = filteredPosts.slice(start, end);
+
+            if (paginatedPosts.length === 0) {
+                container.innerHTML = '<div class="col-12 text-center text-muted">No articles found.</div>';
+                return;
+            }
+
+            paginatedPosts.forEach(post => {
+                const html = `
+                    <div class="col-md-4">
+                        <div class="blog-card">
+                            <img src="${post.img}" class="blog-img" alt="${post.title}">
+                            <div class="blog-body">
+                                <div class="blog-meta">${post.category} • ${post.date}</div>
+                                <h5 class="blog-title">${post.title}</h5>
+                                <p class="blog-excerpt">${post.excerpt}</p>
+                                <a href="#" class="read-more">Read Article <i class="bi bi-arrow-right ms-2"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        function setupPagination() {
+            paginationContainer.innerHTML = '';
+            const pageCount = Math.ceil(filteredPosts.length / itemsPerPage);
+
+            if (pageCount <= 1) return;
+
+            const prevLi = document.createElement('li');
+            prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+            prevLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;">Prev</a>`;
+            paginationContainer.appendChild(prevLi);
+
+            for (let i = 1; i <= pageCount; i++) {
+                const li = document.createElement('li');
+                li.className = `page-item ${currentPage === i ? 'active' : ''}`;
+                li.innerHTML = `<a class="page-link" href="#" onclick="changePage(${i}); return false;">${i}</a>`;
+                paginationContainer.appendChild(li);
+            }
+
+            const nextLi = document.createElement('li');
+            nextLi.className = `page-item ${currentPage === pageCount ? 'disabled' : ''}`;
+            nextLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;">Next</a>`;
+            paginationContainer.appendChild(nextLi);
+        }
+
+        window.changePage = function(page) {
+            const pageCount = Math.ceil(filteredPosts.length / itemsPerPage);
+            if (page < 1 || page > pageCount) return;
+            currentPage = page;
+            displayPosts();
+            setupPagination();
+            document.querySelector('.blog-controls').scrollIntoView({behavior: 'smooth'});
+        };
+
+        function filterContent() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const category = categoryFilter.value;
+
+            filteredPosts = blogPosts.filter(post => {
+                const matchesSearch = post.title.toLowerCase().includes(searchTerm) || post.excerpt.toLowerCase().includes(searchTerm);
+                const matchesCategory = category === 'All' || post.category === category;
+                return matchesSearch && matchesCategory;
+            });
+
+            currentPage = 1; 
+            displayPosts();
+            setupPagination();
+        }
+
+        searchInput.addEventListener('input', filterContent);
+        categoryFilter.addEventListener('change', filterContent);
+
+        displayPosts();
+        setupPagination();
+    </script>
+</body>
+</html>
